@@ -1,0 +1,52 @@
+#version: "3.9"
+
+services:
+  # Punto 1: Servicio nginx expuesto en puerto 8082
+  # se monta un bind mount para servir mi propio index.html
+  web:
+    image: nginx:latest
+    ports:
+      - "8082:80"
+    volumes:
+      - ./html:/usr/share/nginx/html   # bind mount: carpeta local html → contenedor
+    networks:
+      - frontend   # Punto 2: red frontend para acceso desde navegador
+
+  # Punto 1: Servicio Postgres con volumen nombrado (persistente)
+  # Configuración de usuario, contraseña y base de datos
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user3
+      POSTGRES_PASSWORD: _pass3
+      POSTGRES_DB: db3
+    volumes:
+      - db_data:/var/lib/postgresql/data   # Punto 3: volumen nombrado para persistencia
+    networks:
+      - backend   # Punto 2: red backend, aislada del frontend
+
+  # Punto 1: Servicio pgAdmin para administrar la base de datos
+  # Se conecta a Postgres y expone puerto 8083
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8083:80"
+    networks:
+      - frontend   # Punto 2: accesible desde navegador
+      - backend    # Punto 2: acceso al servicio db
+
+# Punto 3: Declaración del volumen nombrado para MySQL
+volumes:
+  db_data:
+
+# Punto 2: Declaración de redes personalizadas
+# frontend: para servicios accesibles desde navegador
+# backend: para servicios internos (db)
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
