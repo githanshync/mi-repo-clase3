@@ -21,7 +21,7 @@ Mi-repo-clase3 es un entorno que muestra una web estática en Nginx y permite ad
 
 2. Levantar servicios:
    ```bash
-docker compose up -d
+   docker compose up -d
 
 ![Docker Images](screenshots/docker-compose-up-d.png)
 
@@ -43,7 +43,7 @@ Pgadmin: http://localhost:8083
    ```bash
    docker compose ps
 
-![Docker Images](screenshots/docker-compose-ps.png)
+![Docker Images](screenshots/docker-ps.png)
 
 2. Acceder a la web: http://localhost:8082
 
@@ -53,7 +53,7 @@ Pgadmin: http://localhost:8083
    docker compose up -d
    docker volume ls
    
-   ![Docker Images](screenshots/volumen-persiste.png)
+![Docker Images](screenshots/volumen-persiste.png)
 
 ### 5. Capturas de Pantalla
 
@@ -74,3 +74,14 @@ Pgadmin: http://localhost:8083
 - Volumen: `mi-repo-clase3_db_data` (persistencia)
 - Variables de entorno: POSTGRES_USER, POSTGRES_PASSWORD y POSTGRES_DB
   
+## Opcional:
+
+docker network ls mostrando la red custom
+
+![network](screenshots/docker-network-ls.png)
+
+docker exec haciendo ping entre servicios
+
+![servicios](docker-compose-exec-pgadmin-ping-db.png)
+
+![servicios](curl-pgadmin.png)
